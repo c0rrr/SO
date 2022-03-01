@@ -1,1 +1,2 @@
 # SO
+# ZADANKA Z SO
