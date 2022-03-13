@@ -1,0 +1,2 @@
+# SO
+# ZADANKA Z SO
