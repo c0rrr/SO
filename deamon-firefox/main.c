@@ -30,12 +30,13 @@ int main(void)
         }
 
         close(STDIN_FILENO);
-        close(STDOUT_FILENO);
-        //close(STDERR_FILENO);
+        //close(STDOUT_FILENO);
+        close(STDERR_FILENO);
 
         while (1) {
 //		system("firefox");
 //		break;
+		printf("1");
 		sleep(1);
         }
    exit(EXIT_SUCCESS);
