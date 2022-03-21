@@ -34,9 +34,8 @@ int main(void)
         //close(STDERR_FILENO);
 
         while (1) {
-//		system("firefox");
-//		break;
-		sleep(1);
+		system("firefox");
+		sleep(20);
         }
    exit(EXIT_SUCCESS);
 }
