@@ -8,7 +8,7 @@ Repozytorium zawiera zadania z pracowni specjalistycznej z przedmiotu systemy in
  - hello
   > wypisanie prostego komunikatu na wyjscie standardowe
  - potok
-  > program wypisujacy posortowany tekst przekazany przez FIFO 
+  > program wypisujacy posortowany tekst przekazany przez FIFO do pliku
  - read-dir
   > program listujacy zawartosc katalogu przekazanego jak argument
  - read-read
