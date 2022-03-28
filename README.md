@@ -1,3 +1,3 @@
-#Systemy informacyjne
+**Systemy informacyjne**
 
-repo zawiera zadania z pracowni specjalistycznej z przedmiotu systemy informacyjne
+Repozytorium zawiera zadania z pracowni specjalistycznej z przedmiotu systemy informacyjne
