@@ -1,30 +1,33 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
+
 int main ()
 {
     int fds[2];
     pid_t pid;
-    /* Create a pipe. File descriptors for the two ends of the pipe are placed in fds. */
-    /* TODO add error handling for system calls like pipe, fork, etc. */
     pipe (fds);
-    /* Fork a child process. */
+    perror("pipe");
     pid = fork ();
+    perror("fork");
     if (pid == (pid_t) 0) {
-        /* This is the child process. Close our copy of the write end of the file descriptor. */
-        close (fds[1]);
-        /* Connect the read end of the pipe to standard input. */
-        dup2 (fds[0], STDIN_FILENO);
-        /* Replace the child process with the "sort” program. */
+	int filefd = open("sample.txt", O_WRONLY, 0666);
+        perror("open");
+	close (fds[1]);
+        dup2 (filefd, STDOUT_FILENO);
+	dup2 (fds[0], STDIN_FILENO);
         execlp ("sort", "sort", NULL);
+	perror("execlp");
+	close(filefd);
     } else {
-        /* This is the parent process. */
         FILE* stream;
-        /* Close our copy of the read end of the file descriptor. */
         close (fds[0]);
-        /* Convert the write file descriptor to a FILE object, and write to it. */
         stream = fdopen (fds[1], "w");
+	perror("fdopen");
         fprintf (stream, "This is a test.\n");
         fprintf (stream, "Hello, world.\n");
         fprintf (stream, "My dog has fleas.\n");
@@ -32,7 +35,6 @@ int main ()
         fprintf (stream, "One fish, two fish.\n");
         fflush (stream);
         close (fds[1]);
-        /* Wait for the child process to finish. */
         waitpid (pid, NULL, 0);
     }
     return 0;
