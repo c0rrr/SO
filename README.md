@@ -9,6 +9,8 @@ Repozytorium zawiera zadania z pracowni specjalistycznej z przedmiotu systemy in
   > wypisanie prostego komunikatu na wyjscie standardowe
  - potok
   > program wypisujacy posortowany tekst przekazany przez FIFO do pliku
+ - projekt
+  > demon serializujacy zawartosc katalogu z drugim katalogiem
  - read-dir
   > program listujacy zawartosc katalogu przekazanego jak argument
  - read-read
