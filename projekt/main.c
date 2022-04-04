@@ -28,17 +28,12 @@ const char* get_file_type (const char* path)
 		assert (0);
 }
 
-int main (int argc, char* argv[])
+void print_directory (char* dir_path)
 {
-	char* dir_path;
 	DIR* dir;
 	struct dirent* entry;
 	char entry_path[PATH_MAX + 1];
 	size_t path_len;
-	if (argc >= 2)
-		dir_path = argv[1];
-	else
-		dir_path = ".";
 
 	strncpy (entry_path, dir_path, sizeof (entry_path));
 	path_len = strlen (dir_path);
@@ -47,7 +42,7 @@ int main (int argc, char* argv[])
 		entry_path[path_len + 1] = '\0';
 		++path_len;
 	}
-	printf("Printed directory path : %s\n", entry_path);
+	printf("\nPrinted directory path : %s\n", entry_path);
 	dir = opendir (dir_path);
 	while ((entry = readdir (dir)) != NULL) {
 		const char* type;
@@ -57,5 +52,21 @@ int main (int argc, char* argv[])
 		printf ("%-18s: %s\n", type, entry_path);
 	}
 	closedir (dir);
+}
+
+int main (int argc, char* argv[])
+{
+	char* dir_path;
+	int n = argc-1;
+	do
+	{
+		if (argc >= 2)
+			dir_path = argv[argc-n];
+		else
+			dir_path = ".";
+
+		print_directory(dir_path);
+		n--;
+	}while(n>0);
 	return 0;
 }
