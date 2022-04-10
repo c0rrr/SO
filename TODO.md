@@ -1,1 +1,0 @@
-TODO List dla projekt #1
