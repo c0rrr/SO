@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <copy.h>
+
 const char* get_file_type (const char* path)
 {
 	struct stat st;
