@@ -47,28 +47,25 @@ void print_directory (char* src_dir_path, char* dest_dir_path)
 	}
 
 	dir = opendir (src_dir_path);
-	while ((entry = readdir (dir)) != NULL) {
-		temp_src = src_dir_path;
-		temp_dest = dest_dir_path;
-
-		const char* type;
-		strncpy (entry_path + path_len, entry->d_name,
-		sizeof (entry_path) - path_len);
-		type = get_file_type (entry_path);
-
-		temp_src = malloc(strlen(src_dir_path) + strlen(entry_path) + 1);
-		temp_dest = malloc(strlen(dest_dir_path) + strlen(entry_path) + 1);
-
-		strcat(temp_src, entry_path);
-		strcat(temp_dest, entry_path);
-		//CpFile(temp_src, temp_dest);
-	}
+    while ((entry = readdir (dir)) != NULL) {
+        const char* type;
+        strncpy (entry_path + path_len, entry->d_name,
+        sizeof (entry_path) - path_len);
+        type = get_file_type (entry_path);
+        printf ("%-18s: %s\n", type, entry_path);
+    }
 	closedir (dir);
 }
 
 int main (int argc, char* argv[])
 {
-	print_directory(argv[2], argv[3]);
-
+	if(argc ==3 )
+	{
+		print_directory(argv[2], argv[3]);
+	}
+	else
+	{
+		fprintf(stderr, "%s", "Zla liczba argumentow!\n");
+	}
 	return 0;
 }
