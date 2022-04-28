@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <dirent.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -29,7 +31,7 @@ int main(int ac, char *av[])
     char *dest = av[2];
 
     if (src[0] == '/' && dest[0] == '/') // cp1 /dir1 /dir2
-    {                                         //- copies all regular files from /dir1 to /dir2
+    {                                    //- copies all regular files from /dir1 to /dir2
         int i;
         for (i = 1; i <= strlen(dest); i++)
         {
@@ -39,18 +41,17 @@ int main(int ac, char *av[])
         {
             src[(i - 1)] = src[i];
         }
-        
+
         DIR *theFolder = opendir(dest);
         struct dirent *next_file;
         char filepath[256];
 
-        while ( (next_file = readdir(theFolder)) != NULL )
+        while ((next_file = readdir(theFolder)) != NULL)
         {
             sprintf(filepath, "%s/%s", dest, next_file->d_name);
             remove(filepath);
         }
         closedir(theFolder);
-        return 0;
         copyDir(src, dest);
     }
     else
@@ -91,6 +92,18 @@ int copyDir(char *source, char *destination)
                 strcpy(tempDest, destination);
                 strcpy(tempSrc, source);
             }
+            else if (dostat(direntp->d_name) == 2)
+            {
+                char directory[] = "/";
+                strcat(directory, tempDest);
+
+                if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
+                {
+                    oops("Error creating directory", "");
+                }
+
+               ///////////////////////////////////////////// copyDir(tempSrc, tempDest);
+            }
         }
         closedir(dir_ptr);
         return 1;
@@ -104,6 +117,8 @@ int dostat(char *filename)
     if (stat(filename, &fileInfo) >= 0)
         if (S_ISREG(fileInfo.st_mode))
             return 1;
+        else if (S_ISDIR(fileInfo.st_mode))
+            return 2;
         else
             return 0;
 
