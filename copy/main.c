@@ -84,7 +84,7 @@ int copyDir(char *source, char *destination)
         while ((direntp = readdir(dir_ptr)))
         {
 
-            if (dostat(direntp->d_name))
+            if (dostat(direntp->d_name) == 1)
             {
                 strcat(tempDest, direntp->d_name);
                 strcat(tempSrc, direntp->d_name);
@@ -97,11 +97,12 @@ int copyDir(char *source, char *destination)
                 char directory[] = "/";
                 strcat(directory, tempDest);
 
-                if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
+                //if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
                 {
-                    oops("Error creating directory", "");
+                    //oops("Error creating directory", "");
                 }
 
+                printf("%s %s \n", tempSrc, tempDest);
                ///////////////////////////////////////////// copyDir(tempSrc, tempDest);
             }
         }
