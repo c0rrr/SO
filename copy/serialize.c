@@ -26,36 +26,28 @@ int serialize(char *srcb, char *destb)
 
     char *src = srcb;
     char *dest = destb;
-
-    if (src[0] == '/' && dest[0] == '/') // cp1 /dir1 /dir2
-    {                                    //- copies all regular files from /dir1 to /dir2
-        int i;
-        for (i = 1; i <= strlen(dest); i++)
-        {
-            dest[(i - 1)] = dest[i];
-        }
-        for (i = 1; i <= strlen(src); i++)
-        {
-            src[(i - 1)] = src[i];
-        }
-
-        DIR *theFolder = opendir(dest);
-        struct dirent *next_file;
-        char filepath[256];
-
-        while ((next_file = readdir(theFolder)) != NULL)
-        {
-            sprintf(filepath, "%s/%s", dest, next_file->d_name);
-            remove(filepath);
-        }
-        closedir(theFolder);
-        copyDir(src, dest);
-    }
-    else
+    
+    int i;
+    for (i = 1; i <= strlen(dest); i++)
     {
-        fprintf(stderr, "usage: ./serialize /source /destination\n");
-        exit(1);
+        dest[(i - 1)] = dest[i];
     }
+    for (i = 1; i <= strlen(src); i++)
+    {
+        src[(i - 1)] = src[i];
+    }
+
+    DIR *theFolder = opendir(dest);
+    struct dirent *next_file;
+    char filepath[256];
+
+    while ((next_file = readdir(theFolder)) != NULL)
+    {
+        sprintf(filepath, "%s/%s", dest, next_file->d_name);
+        remove(filepath);
+    }
+    closedir(theFolder);
+    copyDir(src, dest);
 }
 
 int copyDir(char *source, char *destination)
