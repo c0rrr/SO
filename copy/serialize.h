@@ -1,7 +1,7 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-int serialize(int ac, char *av[]);
+int serialize(char *srcb, char *destb);
 void oops(char *, char *);
 int copyDir(char *src, char *dest);
 int copyFiles(char *src, char *dest);

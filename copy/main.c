@@ -39,23 +39,20 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    if ((chdir("/")) < 0)
-    {
-        /* Log the failure */
-        exit(EXIT_FAILURE);
-    }
-
     close(STDIN_FILENO);
     // close(STDOUT_FILENO);
     close(STDERR_FILENO);
+
+    char *src = argv[1];
+    char *dest = argv[2];
 
     while (1)
     {
 
         printf("deamon is working");
-        serialize(argc, argv);
-        break;
-        sleep(5);
+
+        serialize(src, dest);
+        //sleep(5);
     }
     exit(EXIT_SUCCESS);
 }

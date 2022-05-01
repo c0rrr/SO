@@ -12,7 +12,7 @@
 #define BUFFERSIZE 1024
 #define COPYMORE 0644
 
-int serialize(int ac, char *av[]);
+int serialize(char *srcb, char *destb);
 void oops(char *, char *);
 int copyDir(char *src, char *dest);
 int copyFiles(char *src, char *dest);
@@ -21,11 +21,11 @@ int isdir(char *filename);
 int dostat(char *filename);
 int mode_isReg(struct stat info);
 
-int serialize(int ac, char *av[])
+int serialize(char *srcb, char *destb)
 {
 
-    char *src = av[1];
-    char *dest = av[2];
+    char *src = srcb;
+    char *dest = destb;
 
     if (src[0] == '/' && dest[0] == '/') // cp1 /dir1 /dir2
     {                                    //- copies all regular files from /dir1 to /dir2
@@ -53,7 +53,7 @@ int serialize(int ac, char *av[])
     }
     else
     {
-        fprintf(stderr, "usage: cp1 source destination\n");
+        fprintf(stderr, "usage: ./serialize /source /destination\n");
         exit(1);
     }
 }
@@ -84,6 +84,7 @@ int copyDir(char *source, char *destination)
             if (dostat(direntp->d_name))
             {
                 strcat(tempDest, direntp->d_name);
+
                 strcat(tempSrc, direntp->d_name);
                 copyFiles(tempSrc, tempDest);
                 strcpy(tempDest, destination);
