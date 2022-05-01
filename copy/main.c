@@ -15,12 +15,15 @@
 void oops(char *, char *);
 int copyDir(char *src, char *dest);
 int copyFiles(char *src, char *dest);
+int isdirex(const char *path); 
+int isdir(char *filename);
 int dostat(char *filename);
 int mode_isReg(struct stat info);
 
 int main(int ac, char *av[])
 {
     /* checks args */
+
     if (ac != 3)
     {
         fprintf(stderr, "usage: %s source destination\n", *av);
@@ -61,7 +64,7 @@ int main(int ac, char *av[])
     }
 }
 
-int copyDir(char *source, char *destination)
+/*int copyDir(char *source, char *destination)
 {
     DIR *dir_ptr = NULL;
     struct dirent *direntp;
@@ -92,23 +95,104 @@ int copyDir(char *source, char *destination)
                 strcpy(tempDest, destination);
                 strcpy(tempSrc, source);
             }
-            else if (dostat(direntp->d_name) == 2)
-            {
-                char directory[] = "/";
-                strcat(directory, tempDest);
+            printf("Destingation = %s source = %s\n", tempSrc, tempDest);
+            //else if (dostat(direntp->d_name) == 2)
+            //{
+                //char directory[] = "/";
+                //strcat(directory, tempDest);
 
                 //if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
-                {
+                //{
                     //oops("Error creating directory", "");
-                }
+               // }
 
-                printf("%s %s \n", tempSrc, tempDest);
+                //printf("%s %s \n", tempSrc, tempDest);
                ///////////////////////////////////////////// copyDir(tempSrc, tempDest);
+            //}
+        }
+        closedir(dir_ptr);
+        return 1;
+    }
+}*/
+
+int copyDir(char *source, char *destination)
+{
+    DIR *dir_ptr = NULL;
+    struct dirent *direntp;
+    char tempDest[strlen(destination) + 1];
+    char tempSrc[strlen(source) + 1];
+    strcat(destination, "/");
+    strcat(source, "/");
+    strcpy(tempDest, destination);
+    strcpy(tempSrc, source);
+
+    struct stat fileinfo;
+
+    if ((dir_ptr = opendir(source)) == NULL)
+    {
+        fprintf(stderr, "cp1: cannot open %s for copying\n", source);
+        return 0;
+    }
+    else
+    {
+        char choice;
+        while ((direntp = readdir(dir_ptr)))
+        {
+            if (dostat(direntp->d_name))
+            {
+                strcat(tempDest, direntp->d_name);
+                strcat(tempSrc, direntp->d_name);
+                copyFiles(tempSrc, tempDest);
+                strcpy(tempDest, destination);
+                strcpy(tempSrc, source);
+            }
+            else if (isdir(direntp->d_name))
+            {
+                if (direntp->d_name != "." && direntp->d_name != "..")
+                {
+                    char directory[] = "/";
+                    strcat(directory, tempDest);
+                    strcat(directory, direntp->d_name);
+
+                    if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
+                    {
+                        oops("Error creating directory", "");
+                    }
+
+                    strcat(tempDest, direntp->d_name);
+                    strcat(tempSrc, direntp->d_name);
+                    copyDir(tempSrc, tempDest);
+                }
             }
         }
         closedir(dir_ptr);
         return 1;
     }
+}
+
+int isdirex(const char *path)
+{
+    struct stat stats;
+
+    stat(path, &stats);
+
+    if (S_ISDIR(stats.st_mode))
+        return 0;
+
+    return 1;
+}
+
+int isdir(char *filename)
+{
+    struct stat fileInfo;
+
+    if (stat(filename, &fileInfo) >= 0)
+        if (S_ISDIR(fileInfo.st_mode))
+            return 1;
+        else
+            return 0;
+
+    return;
 }
 
 int dostat(char *filename)
@@ -118,8 +202,6 @@ int dostat(char *filename)
     if (stat(filename, &fileInfo) >= 0)
         if (S_ISREG(fileInfo.st_mode))
             return 1;
-        else if (S_ISDIR(fileInfo.st_mode))
-            return 2;
         else
             return 0;
 
