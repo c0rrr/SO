@@ -17,6 +17,7 @@ char *dest;
 
 void handler(int signum)
 {
+    syslog(LOG_NOTICE, "Forced serialization occured (SIGUSR1)");
     serialize(src, dest);
 }
 
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 
     slp = svalue;
 
-    pid_t pid, sid;
+    /*pid_t pid, sid;
 
     pid = fork();
     if (pid < 0)
@@ -72,13 +73,16 @@ int main(int argc, char *argv[])
     sid = setsid();
     if (sid < 0)
     {
-        /* Log the failure */
+        /* Log the failure 
         exit(EXIT_FAILURE);
     }
 
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
-    close(STDERR_FILENO);
+    close(STDERR_FILENO);*/
+
+        openlog("Folder serialization deamon:", LOG_PID, LOG_USER);
+
 
         src = argv[3];
         dest = argv[4];
@@ -96,9 +100,11 @@ int main(int argc, char *argv[])
 
         while (1)
         {
+            syslog(LOG_NOTICE, "Normal serialization occured");
             //printf("%s %s\n", src, dest);
             serialize(src, dest);
             sleep(slp);
         }
+        closelog();
         exit(EXIT_SUCCESS);
 }
