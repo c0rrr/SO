@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     }
 
     close(STDIN_FILENO);
-    // close(STDOUT_FILENO);
+    close(STDOUT_FILENO);
     close(STDERR_FILENO);
 
     char *src = argv[1];
@@ -48,8 +48,6 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-
-        printf("deamon is working");
 
         serialize(src, dest);
         //sleep(5);
