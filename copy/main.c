@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     {
 
         serialize(argv[1], argv[2]);
-        // sleep(5);
+        sleep(5);
     }
     exit(EXIT_SUCCESS);
 }
