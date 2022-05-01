@@ -8,13 +8,13 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <syslog.h>
 #include "serialize.h"
 
 #define BUFFERSIZE 1024
 #define COPYMORE 0644
 
 int serialize(char *srcb, char *destb);
-void oops(char *, char *);
 int copyDir(char *src, char *dest);
 int copyFiles(char *src, char *dest);
 int isdirex(const char *path);
@@ -24,6 +24,7 @@ int mode_isReg(struct stat info);
 
 int serialize(char *srcb, char *destb)
 {
+    openlog("Folder serialization deamon [serializer]:", LOG_PID, LOG_USER);
 
     char *src = srcb;
     char *dest = destb;
@@ -41,6 +42,7 @@ int serialize(char *srcb, char *destb)
     }
     closedir(theFolder);
     copyDir(src, dest);
+    closelog();
 }
 
 int copyDir(char *source, char *destination)
@@ -56,7 +58,7 @@ int copyDir(char *source, char *destination)
 
     if ((dir_ptr = opendir(source)) == NULL)
     {
-        fprintf(stderr, "serialize: cannot open %s for copying\n", source);
+        syslog(LOG_ERR, "Cannot open source folder, exiting.");
         return 0;
     }
     else
@@ -125,12 +127,14 @@ int copyFiles(char *source, char *destination)
     /* open files */
     if ((in_fd = open(source, O_RDONLY)) == -1)
     {
-        oops("Cannot open ", source);
+        syslog(LOG_ERR, "Cannot open source folder, exiting.");
+        return 0;
     }
 
     if ((out_fd = creat(destination, COPYMORE)) == -1)
     {
-        oops("Cannot creat ", destination);
+        syslog(LOG_ERR, "Cannot open destination folder, exiting.");
+        return 0;
     }
 
     /* copy files */
@@ -138,27 +142,23 @@ int copyFiles(char *source, char *destination)
     {
         if (write(out_fd, buf, n_chars) != n_chars)
         {
-            oops("Write error to ", destination);
+            syslog(LOG_ERR, "Cannot cannot write to destination folder, exiting.");
+            return 0;
         }
 
         if (n_chars == -1)
         {
-            oops("Read error from ", source);
+            syslog(LOG_ERR, "Cannot cannot read from source folder, exiting.");
+            return 0;
         }
     }
 
     /* close files */
     if (close(in_fd) == -1 || close(out_fd) == -1)
     {
-        oops("Error closing files", "");
+        syslog(LOG_ERR, "Error closing files, exiting.");
+        return 0;
     }
 
     return 1;
-}
-
-void oops(char *s1, char *s2)
-{
-    fprintf(stderr, "Error: %s ", s1);
-    perror(s2);
-    exit(1);
 }

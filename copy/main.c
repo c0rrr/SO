@@ -23,11 +23,19 @@ void handler(int signum)
 
 int main(int argc, char *argv[])
 {
-    signal(SIGUSR1, handler);
 
+    int sn=1, dn=2;
+    if(argc == 5)
+    {
+        sn = 3;
+        dn = 4;
+    }
+
+    signal(SIGUSR1, handler);
+    
     int slp = 300;
 
-    if (argc < 3 || argv[3][0] == '/' && argv[4][0] == '/')
+    if (argc < 3 || argv[1][0] != '/' && argv[2][0] != '/')
     {
         fprintf(stderr, "usage: %s source destination\n", *argv);
         exit(1);
@@ -56,7 +64,7 @@ int main(int argc, char *argv[])
 
     slp = svalue;
 
-    /*pid_t pid, sid;
+    pid_t pid, sid;
 
     pid = fork();
     if (pid < 0)
@@ -70,22 +78,21 @@ int main(int argc, char *argv[])
     }
     umask(0);
 
+    openlog("Folder serialization deamon:", LOG_PID, LOG_USER);
+
     sid = setsid();
     if (sid < 0)
     {
-        /* Log the failure 
+        syslog(LOG_ERR, "Wrong SID, exiting.");
         exit(EXIT_FAILURE);
     }
 
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
-    close(STDERR_FILENO);*/
+    close(STDERR_FILENO);
 
-        openlog("Folder serialization deamon:", LOG_PID, LOG_USER);
-
-
-        src = argv[3];
-        dest = argv[4];
+        src = argv[sn];
+        dest = argv[dn];
         int i;
         for (i = 1; i <= strlen(dest); i++)
         {
@@ -101,7 +108,6 @@ int main(int argc, char *argv[])
         while (1)
         {
             syslog(LOG_NOTICE, "Normal serialization occured");
-            //printf("%s %s\n", src, dest);
             serialize(src, dest);
             sleep(slp);
         }
