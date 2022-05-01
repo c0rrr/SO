@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    pid_t pid, sid;
+    /*pid_t pid, sid;
 
     pid = fork();
     if (pid < 0)
@@ -35,18 +35,20 @@ int main(int argc, char *argv[])
     sid = setsid();
     if (sid < 0)
     {
-        /* Log the failure */
+        /* Log the failure 
         exit(EXIT_FAILURE);
     }
 
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-
+    close(STDERR_FILENO);*/
+    int i=0;
     while (1)
     {
-
+        i++;
+        printf("%s %s\n", argv[1], argv[2]);
         serialize(argv[1], argv[2]);
+        printf("%d\n", i);
         sleep(5);
     }
     exit(EXIT_SUCCESS);
