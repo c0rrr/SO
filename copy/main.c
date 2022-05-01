@@ -35,29 +35,21 @@ int main(int argc, char *argv[])
     sid = setsid();
     if (sid < 0)
     {
-        /* Log the failure 
-        exit(EXIT_FAILURE);
-    }
+        /* Log the failure */
+      //  exit(EXIT_FAILURE);
+    //}
 
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-<<<<<<< HEAD
-    close(STDERR_FILENO);*/
-    int i=0;
-    while (1)
-    {
-        i++;
-        printf("%s %s\n", argv[1], argv[2]);
-        serialize(argv[1], argv[2]);
-        printf("%d\n", i);
-        sleep(5);
-=======
-    close(STDERR_FILENO);
+    //close(STDIN_FILENO);
+    //close(STDOUT_FILENO);
+    //close(STDERR_FILENO); 
 
     if (argv[1][0] == '/' && argv[2][0] == '/')
     {
+        int i=0;
         while (1)
         {
+            i++;
+            printf("%d %s %s\n", i, argv[1], argv[2]);
             serialize(argv[1], argv[2]);
             sleep(5);
         }
@@ -67,6 +59,5 @@ int main(int argc, char *argv[])
     {
         fprintf(stderr, "usage: ./serialize /source /destination\n");
         exit(1);
->>>>>>> 86eee976e438789b4d68a20397774a44b5b35ae8
     }
 }
