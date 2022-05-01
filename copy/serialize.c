@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "serialize.h"
 
 #define BUFFERSIZE 1024
 #define COPYMORE 0644
@@ -55,7 +56,7 @@ int copyDir(char *source, char *destination)
 
     if ((dir_ptr = opendir(source)) == NULL)
     {
-        fprintf(stderr, "cp1: cannot open %s for copying\n", source);
+        fprintf(stderr, "serialize: cannot open %s for copying\n", source);
         return 0;
     }
     else
@@ -72,24 +73,6 @@ int copyDir(char *source, char *destination)
                 strcpy(tempDest, destination);
                 strcpy(tempSrc, source);
             }
-            /*else if (isdir(direntp->d_name))
-            {
-                if (direntp->d_name != "." && direntp->d_name != "..")
-                {
-                    char directory[] = "/";
-                    strcat(directory, tempDest);
-                    strcat(directory, direntp->d_name);
-
-                    if (mkdir(directory, S_IRWXU | S_IRWXG | S_IRWXO) == -1)
-                    {
-                        oops("Error creating directory", "");
-                    }
-
-                    strcat(tempDest, direntp->d_name);
-                    strcat(tempSrc, direntp->d_name);
-                    copyDir(tempSrc, tempDest);
-                }
-            }*/
         }
         closedir(dir_ptr);
         return 1;

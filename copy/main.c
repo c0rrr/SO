@@ -7,16 +7,53 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
+#include <signal.h>
+#include <ctype.h>
 
 #include "serialize.h"
 
+char *src;
+char *dest;
+
+void handler(int signum)
+{
+    serialize(src, dest);
+}
+
 int main(int argc, char *argv[])
 {
-    if (argc < 3)
+    signal(SIGUSR1, handler);
+
+    int slp = 300;
+
+    if (argc < 3 || argv[3][0] == '/' && argv[4][0] == '/')
     {
         fprintf(stderr, "usage: %s source destination\n", *argv);
         exit(1);
     }
+
+    int svalue = 300;
+    int sw;
+
+    while ((sw = getopt(argc, argv, "s:")) != -1)
+        switch (sw)
+        {
+        case 's':
+            svalue = atoi(optarg);
+            break;
+        case '?':
+            if (optopt == 's')
+                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+            else if (isprint(optopt))
+                fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+            else
+                fprintf(stderr,"Unknown option character `\\x%x'.\n",optopt);
+            return 1;
+        default:
+            abort();
+        }
+
+    slp = svalue;
 
     pid_t pid, sid;
 
@@ -36,19 +73,15 @@ int main(int argc, char *argv[])
     if (sid < 0)
     {
         /* Log the failure */
-      exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
 
-    if (argv[1][0] == '/' && argv[2][0] == '/')
-    {
-
-        char *src = argv[1];
-        char *dest = argv[2];
-        //- copies all regular files from /dir1 to /dir2
+        src = argv[3];
+        dest = argv[4];
         int i;
         for (i = 1; i <= strlen(dest); i++)
         {
@@ -63,14 +96,9 @@ int main(int argc, char *argv[])
 
         while (1)
         {
+            //printf("%s %s\n", src, dest);
             serialize(src, dest);
-            sleep(1);
+            sleep(slp);
         }
         exit(EXIT_SUCCESS);
-    }
-    else
-    {
-        fprintf(stderr, "usage: ./serialize /source /destination\n");
-        exit(1);
-    }
 }
