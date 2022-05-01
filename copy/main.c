@@ -43,14 +43,11 @@ int main(int argc, char *argv[])
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
 
-    char *src = argv[1];
-    char *dest = argv[2];
-
     while (1)
     {
 
-        serialize(src, dest);
-        //sleep(5);
+        serialize(argv[1], argv[2]);
+        sleep(5);
     }
     exit(EXIT_SUCCESS);
 }
