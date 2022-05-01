@@ -14,23 +14,25 @@ int main(void)
         pid_t pid, sid;
 
         pid = fork();
-        if (pid < 0) {
+        if (pid < 0) 
+        {
                 exit(EXIT_FAILURE);
         }
 
-        if (pid > 0) {
+        if (pid > 0) 
+        {
                 exit(EXIT_SUCCESS);
         }
         umask(0);   
                 
         sid = setsid();
-        if (sid < 0) {
-                /* Log the failure */
+        if (sid < 0) 
+        {
                 exit(EXIT_FAILURE);
         }
         
-        if ((chdir("/")) < 0) {
-                /* Log the failure */
+        if ((chdir("/")) < 0) 
+        {
                 exit(EXIT_FAILURE);
         }
         
@@ -38,9 +40,9 @@ int main(void)
         close(STDOUT_FILENO);
         close(STDERR_FILENO);
         
-        while (1) {
-            printf("deamon is working");
-            system("firefox");
+        while (1) 
+        {
+            system("touch 1.txt");
            
             sleep(5); 
         }
