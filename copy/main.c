@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    /*pid_t pid, sid;
+    pid_t pid, sid;
 
     pid = fork();
     if (pid < 0)
@@ -36,22 +36,35 @@ int main(int argc, char *argv[])
     if (sid < 0)
     {
         /* Log the failure */
-      //  exit(EXIT_FAILURE);
-    //}
+      exit(EXIT_FAILURE);
+    }
 
-    //close(STDIN_FILENO);
-    //close(STDOUT_FILENO);
-    //close(STDERR_FILENO); 
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
 
     if (argv[1][0] == '/' && argv[2][0] == '/')
     {
-        int i=0;
+
+        char *src = argv[1];
+        char *dest = argv[2];
+        //- copies all regular files from /dir1 to /dir2
+        int i;
+        for (i = 1; i <= strlen(dest); i++)
+        {
+            dest[(i - 1)] = dest[i];
+        }
+        for (i = 1; i <= strlen(src); i++)
+        {
+            src[(i - 1)] = src[i];
+        }
+        strcat(dest, "/");
+        strcat(src, "/");
+
         while (1)
         {
-            i++;
-            printf("%d %s %s\n", i, argv[1], argv[2]);
-            serialize(argv[1], argv[2]);
-            sleep(5);
+            serialize(src, dest);
+            sleep(1);
         }
         exit(EXIT_SUCCESS);
     }

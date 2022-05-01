@@ -26,16 +26,8 @@ int serialize(char *srcb, char *destb)
 
     char *src = srcb;
     char *dest = destb;
-    
-    int i;
-    for (i = 1; i <= strlen(dest); i++)
-    {
-        dest[(i - 1)] = dest[i];
-    }
-    for (i = 1; i <= strlen(src); i++)
-    {
-        src[(i - 1)] = src[i];
-    }
+    //- copies all regular files from /dir1 to /dir2
+
 
     DIR *theFolder = opendir(dest);
     struct dirent *next_file;
@@ -54,10 +46,8 @@ int copyDir(char *source, char *destination)
 {
     DIR *dir_ptr = NULL;
     struct dirent *direntp;
-    char tempDest[strlen(destination) + 1];
-    char tempSrc[strlen(source) + 1];
-    strcat(destination, "/");
-    strcat(source, "/");
+    char tempDest[strlen(destination)];
+    char tempSrc[strlen(source)];
     strcpy(tempDest, destination);
     strcpy(tempSrc, source);
 
