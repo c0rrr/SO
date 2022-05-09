@@ -28,8 +28,6 @@ int serialize(char *srcb, char *destb)
 
     char *src = srcb;
     char *dest = destb;
-    //- copies all regular files from /dir1 to /dir2
-
 
     DIR *theFolder = opendir(dest);
     struct dirent *next_file;
@@ -124,7 +122,6 @@ int copyFiles(char *source, char *destination)
     int in_fd, out_fd, n_chars;
     char buf[BUFFERSIZE];
 
-    /* open files */
     if ((in_fd = open(source, O_RDONLY)) == -1)
     {
         syslog(LOG_ERR, "Cannot open source folder, exiting.");
@@ -137,7 +134,6 @@ int copyFiles(char *source, char *destination)
         return 0;
     }
 
-    /* copy files */
     while ((n_chars = read(in_fd, buf, BUFFERSIZE)) > 0)
     {
         if (write(out_fd, buf, n_chars) != n_chars)
@@ -153,7 +149,6 @@ int copyFiles(char *source, char *destination)
         }
     }
 
-    /* close files */
     if (close(in_fd) == -1 || close(out_fd) == -1)
     {
         syslog(LOG_ERR, "Error closing files, exiting.");
