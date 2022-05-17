@@ -15,7 +15,6 @@ void philo(int pnum)
 {
 	printf("Filozof %d chce jesc\n", pnum+1);
 	pthread_mutex_lock(&chop[pnum]);
-	sleep(1);
 	pthread_mutex_lock(&chop[(pnum+1)%5]);
 	eat(pnum);
 	printf("Filozof %d zakonczyl jedzenie\n", pnum+1);
