@@ -48,14 +48,8 @@ void PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], i
 int Generate(int num)
 {
 	srand(time(NULL));
-	if(num == 1) printf("Generowanie ilosci klientow")
-	else if(num == 2) printf("Generowanie ilosci krzesel w poczekalni")
+	if(num == 1) num = rand()%60;
+	else if(num == 2) num = rand()%20;
 
-	for(int i = 0 ; i > 2 ; i++) 
-	{
-		usleep(1000 * 500);
-		printf(".");
-	}
-	if()
-	if()
+	return num;
 }
