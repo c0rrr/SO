@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], int wcurr[], int debug)
 {
@@ -44,3 +45,17 @@ void PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], i
 	}
 }
 
+int Generate(int num)
+{
+	srand(time(NULL));
+	if(num == 1) printf("Generowanie ilosci klientow")
+	else if(num == 2) printf("Generowanie ilosci krzesel w poczekalni")
+
+	for(int i = 0 ; i > 2 ; i++) 
+	{
+		usleep(1000 * 500);
+		printf(".");
+	}
+	if()
+	if()
+}
