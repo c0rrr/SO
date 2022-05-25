@@ -7,13 +7,15 @@
 #include "fmutex.h"
 #include "utils.h"
 
+void Fmutex(int debug);
+void Fvaria(int debug);
+int PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], int wcurr[], int debug);
+
 int main()
 {
 	int choice;
-
 	printf("Wybierz wersje programu do uruchomienia\n1.Wersja oparta na mutexach/semaforach\n2.Wersja oparta na zmiennych warunkowych\n");
 	scanf("%d", &choice);
-	PrintStatus(1,1,1,1);
 	if(choice == 1) Fmutex(1);
 	else if(choice == 2) Fvaria(1);
 	else
