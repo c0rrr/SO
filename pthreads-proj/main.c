@@ -8,8 +8,15 @@
 #include "fmutex.h"
 #include "utils.h"
 
+<<<<<<< HEAD
 void Fmutex(int debugflag, int clientnum, int chairnum, int fryztime);
 void Fvaria(int debugflag, int clientnum, int chairnum, int fryztime);
+=======
+#define clear() printf("\033[H\033[J")
+
+void Fmutex(int debug);
+void Fvaria(int debug);
+>>>>>>> c2a998fcdfc7310b7b222029b7ad91825928f43c
 int PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], int wcurr[], int debug);
 
 int main(int argc, char **argv)
@@ -51,8 +58,14 @@ int main(int argc, char **argv)
 	int choice;
 	printf("Wybierz wersje programu do uruchomienia\n1.Wersja oparta na mutexach/semaforach\n2.Wersja oparta na zmiennych warunkowych\n");
 	scanf("%d", &choice);
+<<<<<<< HEAD
 	if(choice == 1) Fmutex(debugflag, clientnum, chairnum, fryztime);
 	else if(choice == 2) Fvaria(debugflag, clientnum, chairnum, fryztime);
+=======
+	clear();
+	if(choice == 1) Fmutex(1);
+	else if(choice == 2) Fvaria(1);
+>>>>>>> c2a998fcdfc7310b7b222029b7ad91825928f43c
 	else
 	{
 		fprintf(stderr, "Invalid option\n");

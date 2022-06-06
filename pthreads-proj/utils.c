@@ -48,6 +48,7 @@ void PrintStatus(int resigned, int wcurrent, int wmax, int current, int res[], i
 int Generate(int num)
 {
 	srand(time(NULL));
+<<<<<<< HEAD
 	if(num == 1) printf("Generowanie ilosci klientow\n");
 	else if(num == 2) printf("Generowanie ilosci krzesel w poczekalni\n");
 	else if(num == 3) printf("Generowanie dlugosci strzyzenia\n");
@@ -74,5 +75,10 @@ int Generate(int num)
 		printf("Wygenerowana dlugosc strzyzenia to = %ds\n", num);
 	}
 
+=======
+	if(num == 1) num = rand()%60;
+	else if(num == 2) num = rand()%20;
+
+>>>>>>> c2a998fcdfc7310b7b222029b7ad91825928f43c
 	return num;
 }
