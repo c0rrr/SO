@@ -2,6 +2,17 @@
 
 int Generate(int num);
 
+
+int Client()
+{
+
+}
+
+int Fryzjer()
+{
+
+}
+
 int Fmutex(int debugflag, int clientnum, int chairnum, int fryztime)
 {
 	int debug = debugflag;
