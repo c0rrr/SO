@@ -1,6 +1,12 @@
-fryzjer: main.o 
-	gcc -o fryzjer -O3 -pthread main.o 
-main.o: main.c 
-	gcc -c main.c
+OBJ = main.o ../functions.o
+
+all: con_var
+
+con_var: $(OBJ)
+	gcc $(OBJ) -o con_var -pthread
+
+$(OBJ): ../functions.h
+
+.PHONY: clean
 clean:
-	rm -f *.o fryzjer
+	rm -f *.o
