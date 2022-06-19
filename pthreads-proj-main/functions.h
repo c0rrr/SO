@@ -16,16 +16,16 @@ extern int isDebug;
 extern int isEnd;
 extern int clientOnSeatId;
 
-void *BarberThred();
-void printWaitingList();
+void *Barber();
+void printWList();
 void doBarberWork();
 void clientDelay(int clientTime);
 void push(struct Node **head_ref, int clientId, int clientTime);
 void append(struct Node **head_ref, int clientId, int clientTime);
 void printList(struct Node *node);
-void addToWaitingList(int clientId, int clientTime);
+void addToWList(int clientId, int clientTime);
 void deleteNode(struct Node **head_ref, int key);
-void addToRejectedList(int clientId, int clientTime);
-void *ClientThread(void *client);
+void addToRList(int clientId, int clientTime);
+void *Client(void *client);
 
-#endif //SLEEPING_BARBER_PROBLEM_FUNCTIONS_H
+#endif

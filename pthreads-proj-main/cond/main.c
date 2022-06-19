@@ -41,7 +41,7 @@ void *Client(void *client) {
     if (freeSeatsAmount > 0) {
         freeSeatsAmount--;
         if (isDebug == 1)
-            addToWaitingList(clientId, clientTime);
+            addToWList(clientId, clientTime);
         printf("Res:%d WRomm: %d/%d [in: %d]  - Nowy klient w poczekalni\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
 
@@ -61,7 +61,10 @@ void *Client(void *client) {
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient usiadl na krzesle fryzjerskim\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
         if (isDebug == 1)
+        {
             deleteNode(&waitingClients, clientId);
+            printWList();
+        }
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient jest stzyzony\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
         pthread_mutex_unlock(&waitingRoom);
@@ -84,7 +87,7 @@ void *Client(void *client) {
         pthread_mutex_unlock(&waitingRoom);
         rejectedClientsCounter++;
         if (isDebug == 1)
-            addToRejectedList(clientId, clientTime);
+            addToRList(clientId, clientTime);
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient zrezygnowal\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
     }

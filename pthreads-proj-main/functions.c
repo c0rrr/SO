@@ -1,13 +1,14 @@
-#include "functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "functions.h"
 
 struct Node *clients;
 struct Node *rejectedClients;
 struct Node *waitingClients;
 
-void printWaitingList() {
+void printWList() {
     printf("Czeka: ");
     printList(waitingClients);
     printf("\n");
@@ -53,9 +54,9 @@ void printList(struct Node *node) {
     }
 }
 
-void addToWaitingList(int clientId, int clientTime) {
+void addToWList(int clientId, int clientTime) {
     append(&waitingClients, clientId, clientTime);
-    printWaitingList();
+    printWList();
 }
 
 void deleteNode(struct Node **head_ref, int key) {
@@ -72,12 +73,12 @@ void deleteNode(struct Node **head_ref, int key) {
     if (temp == NULL) return;
     prev->next = temp->next;
     free(temp);
-    printWaitingList();
+    printWList();
 }
 
-void addToRejectedList(int clientId, int clientTime) {
+void addToRList(int clientId, int clientTime) {
     append(&rejectedClients, clientId, clientTime);
-    printf("Nie obzluzono: \n");
+    printf("Nie obsluzono: \n");
     printList(rejectedClients);
     printf("\n");
 }

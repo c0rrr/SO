@@ -34,11 +34,14 @@ void *Client(void *client) {
     if (freeSeatsAmount > 0) {
         freeSeatsAmount--;
         if (isDebug == 1)
-            addToWaitingList(clientId, clientTime);
+            addToWList(clientId, clientTime);
 
         printf("Res:%d WRomm: %d/%d [in: %d] - Nowy klient w poczekalni\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
-
+        if (isDebug == 1)
+        {
+            printWList();
+        }
         sem_post(&clientsSem);
         pthread_mutex_unlock(&waitingRoom);
         sem_wait(&barberSem);
@@ -47,7 +50,10 @@ void *Client(void *client) {
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient jest stzyzony\n", rejectedClientsCounter, seatsAmount - freeSeatsAmount,
                seatsAmount, clientOnSeatId);
         if (isDebug == 1)
+        {
             deleteNode(&waitingClients, clientId);
+            printWList();
+        }
 
     }
     else {
@@ -55,7 +61,7 @@ void *Client(void *client) {
         rejectedClientsCounter++;
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient zrezygnowal\n", rejectedClientsCounter, seatsAmount - freeSeatsAmount,
                seatsAmount, clientOnSeatId);
-        if (isDebug == 1) addToRejectedList(clientId, clientTime);
+        if (isDebug == 1) addToRList(clientId, clientTime);
     }
     return NULL;
 }
