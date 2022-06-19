@@ -14,7 +14,7 @@ void printWList() {
     printf("\n");
 }
 
-void doBarberWork() {
+void cut() {
     int randomShearTime = rand() % maxShearTime + 1;
     sleep(randomShearTime);
 }

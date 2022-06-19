@@ -18,7 +18,7 @@ extern int clientOnSeatId;
 
 void *Barber();
 void printWList();
-void doBarberWork();
+void cut();
 void clientDelay(int clientTime);
 void push(struct Node **head_ref, int clientId, int clientTime);
 void append(struct Node **head_ref, int clientId, int clientTime);

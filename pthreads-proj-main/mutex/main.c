@@ -73,9 +73,7 @@ void *Barber() {
         freeSeatsAmount++;
         sem_post(&barberSem);
         pthread_mutex_unlock(&waitingRoom);
-
-
-        doBarberWork();
+        cut();
 
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient zostal ostzyzony\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);

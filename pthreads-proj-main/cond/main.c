@@ -63,7 +63,6 @@ void *Client(void *client) {
         if (isDebug == 1)
         {
             deleteNode(&waitingClients, clientId);
-            printWList();
         }
         printf("Res:%d WRomm: %d/%d [in: %d] - Klient jest stzyzony\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
@@ -102,7 +101,7 @@ void *Barber() {
         pthread_mutex_unlock(&barberMutex);
         if (isEnd == 0)
         {
-            doBarberWork();
+            cut();
             printf("Res:%d WRomm: %d/%d [in: %d] - Klient zostal ostzyzony\n", rejectedClientsCounter,
                    seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
             pthread_cond_signal(&shearEndCond);
