@@ -18,7 +18,7 @@ void doBarberWork() {
     sleep(randomShearTime);
 }
 
-void travelToBarbershop(int clientTime) {
+void ClientDelay(int clientTime) {
     sleep(clientTime);
 }
 
@@ -33,7 +33,7 @@ void push(struct Node **head_ref, int clientId, int clientTime) {
 void append(struct Node **head_ref, int clientId, int clientTime) {
     if (isDebug == 1) printf("Adding client id: %d time: %d\n", clientId, clientTime);
     struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
-    struct Node *last = *head_ref; /* used in step 5*/
+    struct Node *last = *head_ref;
     new_node->id = clientId;
     new_node->time = clientId;
     new_node->next = NULL;
@@ -61,8 +61,8 @@ void addToWaitingList(int clientId, int clientTime) {
 void deleteNode(struct Node **head_ref, int key) {
     struct Node *temp = *head_ref, *prev;
     if (temp != NULL && temp->id == key) {
-        *head_ref = temp->next;   // Changed head
-        free(temp);               // free old head
+        *head_ref = temp->next;
+        free(temp);
         return;
     }
     while (temp != NULL && temp->id != key) {

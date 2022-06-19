@@ -36,7 +36,7 @@ void *ClientThread(void *client) {
     int clientId = (*actualClient).id;
     int clientTime = (*actualClient).time;
 
-    travelToBarbershop(clientTime);
+    ClientDelay(clientTime);
     pthread_mutex_lock(&waitingRoom);
     if (freeSeatsAmount > 0) {
         freeSeatsAmount--;
