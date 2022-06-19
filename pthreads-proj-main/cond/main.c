@@ -31,18 +31,18 @@ struct Node *clients = NULL;
 struct Node *rejectedClients = NULL;
 struct Node *waitingClients = NULL;
 
-void *ClientThread(void *client) {
+void *Client(void *client) {
     struct Node *actualClient = (struct Node *) client;
     int clientId = (*actualClient).id;
     int clientTime = (*actualClient).time;
 
-    ClientDelay(clientTime);
+    clientDelay(clientTime);
     pthread_mutex_lock(&waitingRoom);
     if (freeSeatsAmount > 0) {
         freeSeatsAmount--;
         if (isDebug == 1)
             addToWaitingList(clientId, clientTime);
-        printf("Res:%d WRomm: %d/%d [in: %d]  - New client in waiting room!\n", rejectedClientsCounter,
+        printf("Res:%d WRomm: %d/%d [in: %d]  - Nowy klient w poczekalni\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
 
         pthread_mutex_unlock(&waitingRoom);
@@ -58,11 +58,11 @@ void *ClientThread(void *client) {
         pthread_mutex_lock(&waitingRoom);
         freeSeatsAmount++;
         clientOnSeatId = clientId;
-        printf("Res:%d WRomm: %d/%d [in: %d] - Client sat on the barber's chair!\n", rejectedClientsCounter,
+        printf("Res:%d WRomm: %d/%d [in: %d] - Klient usiadl na krzesle fryzjerskim\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
         if (isDebug == 1)
             deleteNode(&waitingClients, clientId);
-        printf("Res:%d WRomm: %d/%d [in: %d] - The client's hair was cut!\n", rejectedClientsCounter,
+        printf("Res:%d WRomm: %d/%d [in: %d] - Klient jest stzyzony\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
         pthread_mutex_unlock(&waitingRoom);
 
@@ -85,13 +85,13 @@ void *ClientThread(void *client) {
         rejectedClientsCounter++;
         if (isDebug == 1)
             addToRejectedList(clientId, clientTime);
-        printf("Res:%d WRomm: %d/%d [in: %d] - Client rejected!\n", rejectedClientsCounter,
+        printf("Res:%d WRomm: %d/%d [in: %d] - Klient zrezygnowal\n", rejectedClientsCounter,
                seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
     }
     return NULL;
 }
 
-void *BarberThread() {
+void *Barber() {
     pthread_mutex_lock(&barberMutex);
     while (isEnd == 0)
     {
@@ -100,31 +100,31 @@ void *BarberThread() {
         if (isEnd == 0)
         {
             doBarberWork();
-            printf("Res:%d WRomm: %d/%d [in: %d] - Client has new haircut!\n", rejectedClientsCounter,
+            printf("Res:%d WRomm: %d/%d [in: %d] - Klient zostal ostzyzony\n", rejectedClientsCounter,
                    seatsAmount - freeSeatsAmount, seatsAmount, clientOnSeatId);
             pthread_cond_signal(&shearEndCond);
         }
         else {
-            if (isDebug == 1) printf("Barber finished work!\n");
+            if (isDebug == 1) printf("Fryzjer zakonczyl prace\n");
         }
     }
     return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    static char usage[] = "Usage: %s -k value -r value [-c value] [-f value] [-d]\n";
+    static char usage[] = "Uzycie: %s -k wartosc -r wartosc [-c wartosc] [-f wartosc] [-d]\n";
     if (argc < 5) {
-        fprintf(stderr, "%s: too few command-line arguments\n", argv[0]);
+        fprintf(stderr, "%s: zbyt malo argumentow\n", argv[0]);
         fprintf(stderr, usage, argv[0]);
         exit(1);
     }
     if (argc > 10) {
-        fprintf(stderr, "%s: too many command-line arguments\n", argv[0]);
+        fprintf(stderr, "%s: zbyt duzo argumentow\n", argv[0]);
         fprintf(stderr, usage, argv[0]);
         exit(1);
     }
-    srand(time(NULL));
 
+    srand(time(NULL));
     int clientCount = 5;
     int choice;
     int kFlag = 0;
@@ -152,12 +152,12 @@ int main(int argc, char *argv[]) {
         }
     }
     if (kFlag == 0) {
-        fprintf(stderr, "%s: missing -k option\n", argv[0]);
+        fprintf(stderr, "%s: brakuje opcji -k\n", argv[0]);
         fprintf(stderr, usage, argv[0]);
         exit(1);
     }
     if (rFlag == 0) {
-        fprintf(stderr, "%s: missing -r option\n", argv[0]);
+        fprintf(stderr, "%s: brakuje opcji -r\n", argv[0]);
         fprintf(stderr, usage, argv[0]);
         exit(1);
     }
@@ -165,12 +165,12 @@ int main(int argc, char *argv[]) {
     pthread_t *clientThreads = malloc(sizeof(pthread_t) * clientCount);
     pthread_t barberThread;
 
-    if (isDebug == 1) printf("Number of Clients: %d\n", clientCount);
+    if (isDebug == 1) printf("Liczba klientow: %d\n", clientCount);
 
     for (int i = 0; i < clientCount; i++) {
         int randomTime = rand() % maxClientArriveTime + 1;
         push(&clients, i, randomTime);
-        pthread_create(&clientThreads[i], NULL, ClientThread, (void *) clients);
+        pthread_create(&clientThreads[i], NULL, Client, (void *) clients);
     }
 
     pthread_cond_init(&isBarberAvailableCond, NULL);
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
     pthread_mutex_init(&clientFinished, NULL);
     pthread_mutex_init(&barberMutex, NULL);
 
-    pthread_create(&barberThread, 0, BarberThread, 0);
+    pthread_create(&barberThread, 0, Barber, 0);
 
     for (int i = 0; i < clientCount; i++) {
         pthread_join(clientThreads[i], 0);

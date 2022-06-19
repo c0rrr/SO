@@ -1,9 +1,9 @@
 OBJ = main.o ../functions.o
 
-all: con_var
+all: cond
 
-con_var: $(OBJ)
-	gcc $(OBJ) -o con_var -pthread
+cond: $(OBJ)
+	gcc $(OBJ) -o cond -pthread
 
 $(OBJ): ../functions.h
 

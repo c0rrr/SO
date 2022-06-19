@@ -8,7 +8,7 @@ struct Node *rejectedClients;
 struct Node *waitingClients;
 
 void printWaitingList() {
-    printf("Waiting: ");
+    printf("Czeka: ");
     printList(waitingClients);
     printf("\n");
 }
@@ -18,7 +18,7 @@ void doBarberWork() {
     sleep(randomShearTime);
 }
 
-void ClientDelay(int clientTime) {
+void clientDelay(int clientTime) {
     sleep(clientTime);
 }
 
@@ -31,7 +31,7 @@ void push(struct Node **head_ref, int clientId, int clientTime) {
 }
 
 void append(struct Node **head_ref, int clientId, int clientTime) {
-    if (isDebug == 1) printf("Adding client id: %d time: %d\n", clientId, clientTime);
+    if (isDebug == 1) printf("Dodanie klienta o id: %d czas: %d\n", clientId, clientTime);
     struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
     struct Node *last = *head_ref;
     new_node->id = clientId;
@@ -77,7 +77,7 @@ void deleteNode(struct Node **head_ref, int key) {
 
 void addToRejectedList(int clientId, int clientTime) {
     append(&rejectedClients, clientId, clientTime);
-    printf("Rejected: \n");
+    printf("Nie obzluzono: \n");
     printList(rejectedClients);
     printf("\n");
 }
